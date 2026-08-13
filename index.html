@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cripticillo — Crucigrama críptico diario</title>
+<link rel="icon" href="assets/logo.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+<img class="estrella-decorativa" src="assets/logo.png" alt="" aria-hidden="true" />
+
+<!-- ============================= PANTALLA INICIAL ============================= -->
+<main id="pantalla-inicio" class="pantalla inicio">
+  <div class="cabecera">
+    <img class="cabecera__logo" src="assets/logo.png" alt="Logo de Cripticillo" />
+    <h1 class="cabecera__titulo">Cripticillo</h1>
+  </div>
+  <p class="inicio__fecha" id="texto-fecha-hoy"></p>
+  <p style="max-width: 380px; color: var(--ink-soft);">
+    Una pista críptica nueva cada día. Descífrala, letra a letra.
+  </p>
+  <div class="inicio__acciones">
+    <button class="boton boton--primario" id="boton-jugar">Jugar</button>
+    <button class="boton boton--texto" id="boton-como-se-juega">¿Cómo se juega?</button>
+  </div>
+</main>
+
+<!-- ============================= PANTALLA DE JUEGO ============================= -->
+<main id="pantalla-juego" class="pantalla juego oculto">
+  <div class="juego__barra-superior">
+    <button class="boton--texto" id="boton-volver-inicio" style="padding-left:0;">← Inicio</button>
+    <span class="juego__fecha" id="texto-fecha-puzzle"></span>
+    <button class="icono-circular" id="boton-ayuda-juego" aria-label="¿Cómo se juega?" title="¿Cómo se juega?">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 2-2.5 2-2.5 4.2"/><circle cx="12" cy="17.5" r="0.6" fill="currentColor"/><circle cx="12" cy="12" r="10"/></svg>
+    </button>
+  </div>
+
+  <div class="tarjeta-pista">
+    <p class="tarjeta-pista__texto" id="texto-pista">
+      <!-- Se rellena por JavaScript -->
+    </p>
+  </div>
+
+  <div class="filas-solucion" id="contenedor-casillas"></div>
+  <p class="pista-envio">Escribe tu respuesta y pulsa <strong>Enter</strong></p>
+
+  <div class="juego__acciones">
+    <div class="menu-pistas">
+      <button class="boton boton--secundario" id="boton-pistas">Pistas</button>
+      <div class="menu-pistas__lista oculto" id="lista-pistas">
+        <button class="menu-pistas__opcion" data-tipo="definicion">
+          <span class="menu-pistas__punto menu-pistas__punto--definicion"></span> Definición
+        </button>
+        <button class="menu-pistas__opcion" data-tipo="material">
+          <span class="menu-pistas__punto menu-pistas__punto--material"></span> Material
+        </button>
+        <button class="menu-pistas__opcion" data-tipo="indicadores">
+          <span class="menu-pistas__punto menu-pistas__punto--indicadores"></span> Indicadores
+        </button>
+        <button class="menu-pistas__opcion" data-tipo="letra">
+          <span class="menu-pistas__punto menu-pistas__punto--letra"></span> Revelar una letra
+        </button>
+      </div>
+    </div>
+
+    <button class="icono-circular" id="boton-mezclador" aria-label="Mezclador de letras" title="Mezclador de letras">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h4l9 13h3"/><path d="M4 18h4l3-4.3"/><path d="M14 6h6"/><path d="M17 3l3 3-3 3"/><path d="M17 21l3-3-3-3"/></svg>
+    </button>
+
+    <button class="icono-circular icono-circular--relleno" id="boton-enviar" aria-label="Comprobar respuesta" title="Comprobar respuesta (igual que pulsar Enter)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7v4a2.5 2.5 0 0 1-2.5 2.5H8"/><path d="M11.5 10.5L8 13.5l3.5 3"/></svg>
+    </button>
+  </div>
+
+  <div class="burbuja-ayuda oculto" id="burbuja-ayuda">
+    <p id="texto-burbuja-ayuda"></p>
+    <button id="cerrar-burbuja-ayuda" aria-label="Cerrar ayuda">✕</button>
+  </div>
+</main>
+
+<!-- ============================= PANTALLA DE FELICIDADES ============================= -->
+<main id="pantalla-felicidades" class="pantalla felicidades oculto">
+  <h1 class="felicidades__titulo">¡Felicidades!</h1>
+  <p>Has resuelto el crucigrama de hoy.</p>
+  <p class="felicidades__solucion" id="texto-solucion-final"></p>
+  <button class="boton boton--primario" id="boton-jugar-anteriores">Jugar otro día</button>
+  <div class="dias-anteriores oculto" id="contenedor-dias-anteriores">
+    <div class="dias-anteriores__lista" id="lista-dias-anteriores"></div>
+  </div>
+
+  <div class="felicidades__redes">
+    <p>¿Buscas la explicación? ¡En nuestros perfiles podrás encontrar un vídeo explicándolo!</p>
+  </div>
+</main>
+
+<!-- ============================= PIE DE PÁGINA FIJO: REDES SOCIALES ============================= -->
+<footer class="pie-redes">
+  <div class="iconos-redes">
+    <a href="https://www.instagram.com/cripticillo/" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.youtube.com/@cripticillo" target="_blank" rel="noopener" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.5 9.5l5 2.5-5 2.5z" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://www.tiktok.com/@cripticillo" target="_blank" rel="noopener" aria-label="TikTok">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4v10.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 4c0 2.5 2 4.5 4.5 4.5"/></svg>
+    </a>
+  </div>
+</footer>
+
+<!-- ============================= POP-UP: ¿CÓMO SE JUEGA? ============================= -->
+<div class="superposicion oculto" id="superposicion-como-se-juega">
+  <div class="ventana">
+    <button class="ventana__cerrar" data-cerrar="superposicion-como-se-juega" aria-label="Cerrar">✕</button>
+    <h2 class="ventana__titulo">¿Cómo se juega?</h2>
+    <div class="ventana__texto">
+      <p>Cada día tienes una <strong>pista críptica</strong> nueva. A simple vista parece una frase rara, pero en realidad esconde dos caminos hacia la misma solución:</p>
+      <p>• Una <strong>definición</strong>, que significa literalmente lo mismo que la respuesta.<br>
+      • Un <strong>juego de palabras</strong> (el material + un indicador que avisa del truco: anagrama, letras escondidas, palabra al revés...) que construye esa misma respuesta de otra forma.</p>
+      <p>Si te atascas, abre el botón <strong>«Pistas»</strong> para que te señalen, coloreado, cada trozo de la pista y te expliquen qué función cumple. También puedes pedir que se revele alguna letra suelta.</p>
+      <p>Escribe tu solución en las casillas y pulsa <strong>Enter</strong> para comprobarla. ¡Y prueba el <strong>mezclador</strong> de letras si quieres jugar con las combinaciones antes de decidirte!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= POP-UP: MEZCLADOR ============================= -->
+<div class="superposicion oculto" id="superposicion-mezclador">
+  <div class="ventana">
+    <button class="ventana__cerrar" data-cerrar="superposicion-mezclador" aria-label="Cerrar">✕</button>
+    <h2 class="ventana__titulo">Mezclador</h2>
+    <p class="ventana__texto">Escribe las letras que quieras combinar y pulsa «Reorganizar» tantas veces como necesites. Arrastra cada ficha con el ratón o el dedo; si crees saber su sitio, suéltala sobre la casilla correspondiente.</p>
+    <input type="text" id="mezclador-entrada" class="mezclador__entrada" placeholder="Escribe aquí tus letras…" autocomplete="off" />
+    <div style="display:flex; gap:10px; margin-bottom:14px;">
+      <button class="boton boton--secundario" id="mezclador-reorganizar" style="flex:1;">Reorganizar</button>
+    </div>
+    <div class="mezclador__zona" id="mezclador-zona"></div>
+  </div>
+</div>
+
+<script src="js/utils.js"></script>
+<script src="js/puzzles-data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
